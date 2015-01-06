@@ -12,7 +12,7 @@ if(!file.exists(fileDownloadName))
 
 data <- read.table(fileDownloadName,header = TRUE,sep=";",colClasses = c(rep("character",8),"numeric")) #ReadFile
 data <- data[data$Date == "1/2/2007" | data$Date == "2/2/2007"  ,c(1,2,3,4,5,6,7,8,9)]  #Filter date and columns, only necesary
-data$Date <- as.POSIXct(paste(data$Date, data$Time), format="%d/%m/%Y %H:%M:%S")
+data$Date <- as.POSIXct(paste(data$Date, data$Time), format="%d/%m/%Y %H:%M:%S") #Format to date
 data$Global_active_power <- as.double(data$Global_active_power) #Format to double
 data$Global_reactive_power <- as.double(data$Global_reactive_power )  #Format to double
 data$Voltage <- as.double(data$Voltage)  #Format to double
@@ -24,7 +24,15 @@ data$Sub_metering_2 <- as.double(data$Sub_metering_2 )  #Format to double
 #            PLOT
 ############################################################
 
-png(file = "plot1.png",width = 480,height = 480, units = "px", bg = "transparent")
-hist(data$Global_active_power,col="red",main = "Global Active Power", xlab = "Global Active Power (kilowatt)")
+png(file = "plot4.png",width = 480,height = 480, units = "px", bg = "transparent")
+    par(mfrow = c(2, 2))
+    with(data, {
+        plot(Date,Global_active_power,type="l",ylab = "Global Active Power",xlab = "")
+        plot(Date,Voltage,type="l",ylab = "Voltage",xlab = "datatime")
+        plot(Date, Sub_metering_1,type = "l",main = "",ylab = "Every Sub Metering",xlab = "")
+        lines(Date, Sub_metering_2, col = "red")
+        lines(Date, Sub_metering_3, col = "blue")
+        legend("topright", bty = "n",pch = "-", col = c("black","red","blue"), legend = c("Sub_metering_1","Sub_metering_2", "Sub_metering_3"))
+        plot(Date,Global_reactive_power,type="l",ylab = "Global_reactive_power",xlab = "datatime")
+    })
 dev.off()
-
