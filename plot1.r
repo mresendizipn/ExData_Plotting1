@@ -21,5 +21,6 @@ data$Sub_metering_2 <- as.double(data$Sub_metering_2 )  #Format to double
 #            PLOT
 ############################################################
 
-
+png(file = "plot1.png",width = 480,height = 480, units = "px")
 hist(data$Global_active_power,col="red",main = "Global Active Power", xlab = "Global Active Power (kilowatt)")
+dev.off()
